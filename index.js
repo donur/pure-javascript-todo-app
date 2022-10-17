@@ -10,7 +10,12 @@ const taskList = document.querySelector("#task-list");
 eventListeners();
 
 function eventListeners() {
+  // submit event
   form.addEventListener("submit", addNewItem);
+  // delete an item
+  taskList.addEventListener("click", deleteItem);
+  // delete all item
+  btnDeleteAll.addEventListener("click", deleteAllItems);
 }
 
 function addNewItem(e) {
@@ -37,4 +42,28 @@ function addNewItem(e) {
   input.value = "";
 
   e.preventDefault();
+}
+
+// Eleman Silme
+function deleteItem(e) {
+  if (confirm("Silmek istediğinize emin misiniz?")) {
+    if (e.target.className === "fas fa-times") {
+      // console.log(e.target);
+      e.target.parentElement.parentElement.remove();
+    }
+  }
+  e.pareventDefault();
+}
+
+// Tüm Elemanları Silme
+function deleteAllItems(e) {
+  if (confirm("Tüm elemanları silmek istediğinize emin misiniz?")) {
+    taskList.childNodes.forEach(function (item) {
+      // console.log(item);
+      if (item.nodeType === 1) {
+        item.remove();
+      }
+    });
+  }
+  // Tek seferde innerHTML içerisini boşaltmak istersek; taskList.innerHTML=""; kullanılabilir!
 }
