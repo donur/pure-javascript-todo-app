@@ -85,20 +85,30 @@ function deleteItem(e) {
     if (confirm("Silmek istediğinize emin misiniz?")) {
       // console.log(e.target);
       e.target.parentElement.parentElement.remove();
+      deleteTodoFromStorage(e.target.parentElement.parentElement.textContent);
     }
   }
   // e.pareventDefault();
 }
 
+// LocalStorage dan Silme İşlemi
+function deleteTodoFromStorage(deleteTodo) {
+  let todos = getItemsFromLS();
+  todos.forEach(function (todo, index) {
+    if (todo === deleteTodo) {
+      todos.splice(index, 1);
+    }
+  });
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
 // Tüm Elemanları Silme
 function deleteAllItems(e) {
   if (confirm("Tüm elemanları silmek istediğinize emin misiniz?")) {
-    taskList.childNodes.forEach(function (item) {
-      // console.log(item);
-      if (item.nodeType === 1) {
-        item.remove();
-      }
-    });
+    while (taskList.firstChild) {
+      taskList.removeChild(taskList.firstChild);
+    }
+    localStorage.clear();
   }
-  // Tek seferde innerHTML içerisini boşaltmak istersek; taskList.innerHTML=""; kullanılabilir!
 }
+// Tek seferde innerHTML içerisini boşaltmak istersek; taskList.innerHTML=""; kullanılabilir!
